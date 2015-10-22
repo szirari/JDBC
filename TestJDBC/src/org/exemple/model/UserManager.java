@@ -2,6 +2,7 @@ package org.exemple.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,19 +33,200 @@ public final class UserManager {
 	}
 
 	public void add(User u) {
-		this.cache.put(u.getId(),u);
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try{
+			//1- je me connecte
+			System.out.println("Connecting ...");
+			conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+			
+			//2- creation du statement
+			System.out.println("Create Statement ...");
+			//stmt = conn.createStatement();
+			// Select ? ne marche pas
+			//
+			stmt = conn.prepareStatement("INSERT INTO user VALUES (?,?,?,?);");
+			stmt.setInt(1, u.getId());
+			stmt.setString(2, u.getFirstname());
+			stmt.setString(3, u.getLastname());
+			stmt.setString(4, u.getAddress());
+			
+			stmt.executeUpdate();
+			
+			
+			
+		}	catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			// Pour cloturer le statement
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			// Pour cloturer le driver
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	public void del(User u) {
-		this.cache.remove(u.getId());
+		User user = new User();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try{
+			//1- je me connecte
+			System.out.println("Connecting ...");
+			conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+			
+			//2- creation du statement
+			System.out.println("Create Statement ...");
+			//stmt = conn.createStatement();
+			// Select ? ne marche pas
+			//
+			stmt = conn.prepareStatement("DELATE from user WHERE id = ?;");
+			stmt.setInt(1, u.getId());
+
+
+			
+			stmt.executeUpdate();
+			
+		}	catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			// Pour cloturer le statement
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			// Pour cloturer le driver
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	public void upd(User u) {
-		this.cache.replace(u.getId(),u);
+		User user = new User();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try{
+			//1- je me connecte
+			System.out.println("Connecting ...");
+			conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+			
+			//2- creation du statement
+			System.out.println("Create Statement ...");
+			//stmt = conn.createStatement();
+			// Select ? ne marche pas
+			//
+			stmt = conn.prepareStatement("UPDATE user SET id = ?,firstname= ?,lastname=?,address= ? WHERE id = ?;");
+			stmt.setInt(1, u.getId());
+			stmt.setString(2, u.getFirstname());
+			stmt.setString(3, u.getLastname());
+			stmt.setString(4, u.getAddress());
+			stmt.setInt(5, u.getId());
+
+			
+			stmt.executeUpdate();
+			
+		}	catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			// Pour cloturer le statement
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			// Pour cloturer le driver
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}	
 	
 	public User getbyId(int id){
-		return this.cache.get(id);
+		User user = new User();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try{
+			//1- je me connecte
+			System.out.println("Connecting ...");
+			conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+			
+			//2- creation du statement
+			System.out.println("Create Statement ...");
+			//stmt = conn.createStatement();
+			// Select ? ne marche pas
+			//
+			stmt = conn.prepareStatement("select * from user where id = ?;");
+			stmt.setInt(1, id);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next())
+			{
+				user = new User();	
+				user.setId(rs.getInt("id")); 
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setAddress(rs.getString("address"));
+			}
+			
+		}	catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			// Pour cloturer le statement
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			// Pour cloturer le driver
+			try {
+				// Meme la fermeture de la connexion peut planter dou les try catch
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return user;
 	}
 	
 	public List<User> getAll(){

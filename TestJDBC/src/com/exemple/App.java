@@ -14,7 +14,7 @@ public class App {
 	public static void main(String[] args) {
 
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 
 		try{
 			//1- je me connecte
@@ -22,22 +22,41 @@ public class App {
 			conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
 			
 			//2- creation du statement
-			System.out.println("Crate Statement ...");
-			stmt = conn.createStatement();
-			
+			System.out.println("Create Statement ...");
+			//stmt = conn.createStatement();
+			// Select ? ne marche pas
+			//
+			stmt = conn.prepareStatement("insert into user values (?,?,?,?);");
 			//3- Execution d'une requete
-			ResultSet rs = stmt.executeQuery("select * from user;");
+			//int rs = stmt.executeUpdate("insert into user values (50, 'insert1', 'insert2', 'adresse insert');");
+			
+			//System.out.println(rs);
+			
+			System.out.println("Send SQL ...");
+			stmt.setInt(1,71);
+			stmt.setString(2, "Elise");
+			stmt.setString(3, "bidule");
+			stmt.setString(4, "Adresse de bidule");
+			
+			stmt.executeUpdate();
+			
+			stmt.setInt(1,72);
+			stmt.setString(2, "Elise");
+			stmt.setString(3, "bidule");
+			stmt.setString(4, "Adresse de bidule");
+			
+			stmt.executeUpdate();
 			
 			//-4 boucler sur rs pour afficher le résultat
 			// rs n'est pas une liste. C'est un ens de résultats. Pointeur vers la ligne. Next permet d'aller vers la ligne suivante
-			while(rs.next())
-			{
-				System.out.println("User #" + rs.getInt("id") + " " +rs.getString("firstname") + " " + rs.getString("lastname") + " " + rs.getString("address"));
-				
-			}
+//			while(rs.next())
+//			{
+//				System.out.println("User #" + rs.getInt("id") + " " +rs.getString("firstname") + " " + rs.getString("lastname") + " " + rs.getString("address"));
+//				
+//			}
 			// 5- Tout cloturer dans finaly
 
-			rs.close();
+//			rs.close();
 
 		}
 		catch(SQLException e){

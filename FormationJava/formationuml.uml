@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_jL6sIGz9EeW-bqhVM8LcFA" name="ClassDiagram">
+  <packagedElement xmi:type="uml:Class" xmi:id="_BJfdsGz_EeW-bqhVM8LcFA" name="Book">
+    <ownedAttribute xmi:id="_EsgRcGz_EeW-bqhVM8LcFA" name="property1">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EshfkGz_EeW-bqhVM8LcFA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EshfkWz_EeW-bqhVM8LcFA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+</uml:Model>
